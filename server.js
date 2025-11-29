@@ -28,7 +28,7 @@ try {
 
     db = admin.firestore();
     // Coleção onde suas mensagens de chat estão salvas. Corrigido para a sua estrutura
-    CHAT_COLLECTION = db.collection('artifacts/guia_sonhos_v1/chat'); 
+    CHAT_COLLECTION = db.collection('artifacts/sonhos_premium_v2/chat'); 
     console.log("✅ Firebase Admin e Firestore conectados.");
 
 } catch (e) {
