@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guia de Sonhos & Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Estilos Dinâmicos -->
+    <style id="estilos-dinamicos"></style>
+</head>
+<body>
+
+    <!-- LOADING -->
+    <div id="loadingOverlay" class="loading-screen">
+        <div class="crystal-ball-loader">🔮</div>
+        <p>Conectando ao Plano Astral...</p>
+    </div>
+
+    <div class="app-container">
+        
+        <!-- HEADER -->
+        <header class="top-bar">
+            <h1 class="mystic-title">Guia de Sonhos</h1>
+            <div class="header-actions">
+                <!-- Mostra o ID do usuário para facilitar identificação -->
+                <div class="user-id-display">ID: <span id="headerUserId">...</span></div>
+            </div>
+        </header>
+
+        <!-- 1. TELA SONHOS (HOME) -->
+        <section id="tab-sonhos" class="screen active">
+            <div class="oracle-container">
+                <div class="crystal-ball-wrapper">
+                    <div class="crystal-ball">
+                        <div class="glimmer"></div>
+                    </div>
+                    <div class="ball-shadow"></div>
+                </div>
+                
+                <h2 class="oracle-text">Conte seu sonho...</h2>
+                <div class="input-group">
+                    <input type="text" id="dreamInput" placeholder="Ex: Estava voando sobre o mar..." autocomplete="off">
+                    <button onclick="consultarOraculoIA()" class="btn-mystic">Revelar Significado</button>
+                </div>
+
+                <div id="dreamResult" class="dream-result hidden">
+                    <h3>👁️ O Oráculo Responde:</h3>
+                    <p id="resultText"></p>
+                    <div id="loadingOraculo" class="hidden">✨ Consultando os espíritos da IA...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. TELA CHAT (REAL) -->
+        <section id="tab-chat" class="screen">
+            <div class="chat-wrapper">
+                <div id="chatMessages" class="chat-messages">
+                    <!-- Mensagens via Socket.io aparecem aqui -->
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Sua mensagem...">
+                    <button onclick="enviarMensagemSocket()" class="btn-send">➤</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. TELA PERFIL -->
+        <section id="tab-perfil" class="screen">
+            <div class="profile-header">
+                <!-- Avatar clicável para trocar foto -->
+                <div class="profile-pic-wrapper" id="meuAvatarWrapper" onclick="document.getElementById('fileInput').click()">
+                    <!-- A moldura e a imagem são injetadas via JS -->
+                    <img src="https://i.pravatar.cc/150?img=12" id="imgAvatar" alt="Avatar">
+                    <div class="edit-icon">📷</div>
+                </div>
+                <input type="file" id="fileInput" hidden accept="image/*" onchange="trocarFoto(this)">
+                
+                <!-- Nome Editável -->
+                <div class="name-edit-container">
+                    <input type="text" id="inputNomePerfil" value="Viajante" onblur="salvarNome()">
+                    <span class="edit-pencil">✎</span>
+                </div>
+                
+                <!-- Balão Equipado Preview -->
+                <div id="previewBalaoPerfil" class="perfil-balao-preview">
+                    "Assim será minha mensagem no chat!"
+                </div>
+            </div>
+
+            <div class="inventory-section">
+                <h3>🖼️ Minhas Conquistas (Molduras)</h3>
+                <div class="inventory-grid" id="gridMoldurasAdquiridas"></div>
+            </div>
+
+            <div class="inventory-section">
+                <h3>💬 Meus Estilos (Balões)</h3>
+                <div class="inventory-grid" id="gridBaloesAdquiridos"></div>
+            </div>
+        </section>
+
+        <!-- 4. TELA LOJA (COMPLETA) -->
+        <section id="tab-loja" class="screen">
+            <div class="shop-header">
+                <h2>Loja do Destino</h2>
+                <p>Assista para ganhar um item aleatório!</p>
+                <button class="btn-watch" onclick="assistirAnuncio()">📺 ASSISTA E GANHE</button>
+            </div>
+
+            <div class="shop-category">
+                <h3>🖼️ Todas as Molduras</h3>
+                <div class="inventory-grid" id="lojaMoldurasTodas">
+                    <!-- JS vai preencher com todas as molduras -->
+                </div>
+            </div>
+
+            <div class="shop-category">
+                <h3>💬 Todos os Balões</h3>
+                <div class="inventory-grid" id="lojaBaloesTodos">
+                    <!-- JS vai preencher com todos os balões -->
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVEGAÇÃO -->
+        <nav class="bottom-nav">
+            <button onclick="mudarAba('sonhos')" class="nav-item active">🔮 <span>Oráculo</span></button>
+            <button onclick="mudarAba('chat')" class="nav-item">💬 <span>Chat</span></button>
+            <button onclick="mudarAba('perfil')" class="nav-item">👤 <span>Perfil</span></button>
+            <button onclick="mudarAba('loja')" class="nav-item">🛒 <span>Loja</span></button>
+        </nav>
+
+    </div>
+
+    <!-- MODAL DE VISUALIZAR PERFIL DE OUTRO -->
+    <div id="modalPerfilOutro" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal('modalPerfilOutro')">&times;</span>
+            <div id="outroAvatarWrapper" class="profile-pic-wrapper large"></div>
+            <h3 id="outroNome">Nome</h3>
+            <p>Conquistas:</p>
+            <div id="outroConquistas" class="badges-row"></div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

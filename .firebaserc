@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "navalha-de-ouro-v11"
+  },
+  "targets": {
+    "navalha-de-ouro-v11": {
+      "hosting": {
+        "sonhos-app": [
+          "sonhos"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,111 @@
+:root {
+    --bg-dark: #0a0510;
+    --bg-card: #150a20;
+    --gold: #d4af37;
+    --gold-glow: rgba(212, 175, 55, 0.5);
+    --purple: #6a0dad;
+    --purple-glow: rgba(106, 13, 173, 0.5);
+    --text: #e0e0e0;
+    --text-sec: #a0a0a0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+body { background-color: var(--bg-dark); color: var(--text); overflow: hidden; height: 100vh; }
+
+/* LOADING */
+.loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.crystal-ball-loader { font-size: 60px; animation: float 2s infinite ease-in-out; }
+
+/* APP LAYOUT */
+.app-container { height: 100%; display: flex; flex-direction: column; position: relative; max-width: 600px; margin: 0 auto; background: #0f0715; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+.top-bar { padding: 15px; text-align: center; background: rgba(21, 10, 32, 0.9); border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+.mystic-title { font-family: 'Cinzel', serif; color: var(--gold); text-shadow: 0 0 10px var(--gold-glow); font-size: 1.2rem; }
+.user-id-display { font-size: 0.7rem; color: var(--text-sec); border: 1px solid #333; padding: 2px 6px; border-radius: 4px; }
+
+/* SCREENS */
+.screen { display: none; height: 100%; padding: 10px 15px 70px 15px; overflow-y: auto; animation: fadeIn 0.4s; }
+.screen.active { display: block; }
+
+/* ORACLE (HOME) */
+.oracle-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80%; text-align: center; }
+.crystal-ball-wrapper { position: relative; width: 180px; height: 180px; margin-bottom: 30px; }
+.crystal-ball {
+    width: 100%; height: 100%; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), rgba(106, 13, 173, 0.6), #000);
+    box-shadow: 0 0 40px var(--purple-glow), inset 0 0 20px rgba(255,255,255,0.1);
+    animation: pulseBall 4s infinite alternate;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.glimmer { position: absolute; top: 20%; left: 20%; width: 15px; height: 15px; background: rgba(255,255,255,0.8); border-radius: 50%; filter: blur(2px); }
+.ball-shadow { width: 100px; height: 15px; background: rgba(0,0,0,0.5); border-radius: 50%; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); filter: blur(5px); }
+
+.input-group { width: 100%; display: flex; gap: 10px; margin-top: 20px; }
+input { flex: 1; padding: 12px; border-radius: 20px; border: 1px solid #444; background: #222; color: #fff; outline: none; }
+.btn-mystic { padding: 12px 20px; border-radius: 20px; border: none; background: linear-gradient(45deg, var(--purple), #4a0072); color: #fff; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px var(--purple-glow); }
+
+.dream-result { margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px; border: 1px solid var(--gold); text-align: left; }
+.dream-result h3 { color: var(--gold); margin-bottom: 10px; font-size: 1rem; }
+.dream-result p { font-size: 0.9rem; line-height: 1.5; white-space: pre-wrap; }
+
+/* CHAT */
+.chat-wrapper { display: flex; flex-direction: column; height: 100%; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 12px; }
+.chat-input-area { padding: 10px; background: var(--bg-card); display: flex; gap: 10px; border-top: 1px solid #333; position: absolute; bottom: 60px; left: 0; width: 100%; }
+.btn-send { width: 45px; height: 45px; border-radius: 50%; border: none; background: var(--gold); color: #000; font-weight: bold; cursor: pointer; }
+
+/* MENSAGEM NO CHAT */
+.msg-row { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 5px; }
+.msg-row.mine { flex-direction: row-reverse; }
+.msg-avatar-container { width: 40px; height: 40px; position: relative; flex-shrink: 0; cursor: pointer; }
+.msg-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; position: relative; z-index: 1; }
+/* Pseudo-elementos para molduras serão inseridos pelo JS via classes geradas */
+
+.msg-content { max-width: 75%; display: flex; flex-direction: column; }
+.msg-name { font-size: 0.7rem; color: var(--gold); margin-bottom: 2px; }
+.mine .msg-name { text-align: right; }
+.msg-bubble { padding: 10px 14px; border-radius: 15px; font-size: 0.9rem; position: relative; background: #333; color: #fff; word-wrap: break-word; }
+.msg-row.mine .msg-bubble { background: var(--purple); }
+
+/* SISTEMA SYSTEM MESSAGE */
+.system-msg { text-align: center; color: var(--gold); font-size: 0.8rem; margin: 10px 0; font-style: italic; opacity: 0.8; }
+
+/* PERFIL & LOJA */
+.profile-pic-wrapper { width: 100px; height: 100px; margin: 20px auto; position: relative; cursor: pointer; }
+.profile-pic-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #333; }
+.edit-icon { position: absolute; bottom: 0; right: 0; background: var(--gold); color: #000; border-radius: 50%; width: 25px; height: 25px; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+
+.name-edit-container { text-align: center; margin-bottom: 20px; }
+.name-edit-container input { text-align: center; background: transparent; border: none; border-bottom: 1px solid #444; color: var(--gold); font-size: 1.2rem; font-weight: bold; width: 60%; }
+
+.perfil-balao-preview { text-align: center; margin: 10px auto; padding: 10px; border-radius: 10px; max-width: 80%; font-size: 0.9rem; }
+
+.inventory-section h3, .shop-category h3 { color: var(--text-sec); font-size: 0.9rem; margin: 15px 0 10px 0; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+.inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; }
+
+.item-card { background: #222; border: 1px solid #333; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s; position: relative; }
+.item-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.item-card.equipped { border: 2px solid var(--gold); box-shadow: 0 0 10px var(--gold-glow); }
+.item-card.owned { opacity: 1; }
+.item-card.locked { opacity: 0.6; filter: grayscale(0.8); }
+
+.item-preview { width: 40px; height: 40px; border-radius: 50%; background: #000; margin-bottom: 5px; position: relative; }
+.item-name { font-size: 0.7rem; text-align: center; color: #fff; }
+.item-status { font-size: 0.6rem; color: var(--gold); margin-top: 2px; }
+
+.btn-watch { width: 100%; padding: 15px; border: none; border-radius: 10px; background: linear-gradient(45deg, #ff4b1f, #ff9068); color: white; font-weight: bold; text-transform: uppercase; margin-bottom: 20px; cursor: pointer; animation: pulse 2s infinite; }
+
+/* NAV */
+.bottom-nav { position: absolute; bottom: 0; width: 100%; height: 60px; background: #11081a; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
+.nav-item { background: none; border: none; color: #666; font-size: 0.7rem; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+.nav-item.active { color: var(--gold); text-shadow: 0 0 5px var(--gold-glow); }
+
+/* MODAL */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; display: none; align-items: center; justify-content: center; }
+.modal-content { background: var(--bg-card); padding: 20px; border-radius: 15px; width: 90%; max-width: 350px; text-align: center; border: 1px solid var(--gold); position: relative; }
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #fff; }
+
+.hidden { display: none !important; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes pulseBall { 0% { box-shadow: 0 0 20px var(--purple-glow); } 100% { box-shadow: 0 0 50px var(--purple-glow); } }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
